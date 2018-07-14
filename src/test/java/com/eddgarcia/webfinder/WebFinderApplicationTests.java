@@ -1,4 +1,4 @@
-package com.webfinder.WebFinder;
+package com.eddgarcia.webfinder;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
