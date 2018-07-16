@@ -21,6 +21,6 @@ public class WebFinderApplication implements CommandLineRunner{
 	@Override
 	public void run(String... arg0) throws Exception {
 		// clear all record if existed before do the tutorial with new data 
-		repository.deleteAll();
+		//repository.deleteAll();
 	}
 }
