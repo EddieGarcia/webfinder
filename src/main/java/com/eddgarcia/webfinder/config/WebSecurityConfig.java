@@ -47,22 +47,24 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				.antMatchers("/").permitAll()
 				.antMatchers("/login").permitAll()
 				.antMatchers("/registration").permitAll()
+				.antMatchers("/accessDenied").permitAll()
+				.antMatchers("/auth/**").hasAnyAuthority("ADMIN", "USER")
 				.antMatchers("/admin/**").hasAuthority("ADMIN").anyRequest()
 				.authenticated().and().csrf().disable().formLogin()
 				.loginPage("/login").failureUrl("/login?error=true")
-				.defaultSuccessUrl("/admin/index",true)
+				.defaultSuccessUrl("/admin/index")
 				.usernameParameter("email")
 				.passwordParameter("password")
 				.and().logout()
 				.logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
 				.logoutSuccessUrl("/").and().exceptionHandling()
-				.accessDeniedPage("/access-denied");
+				.accessDeniedPage("/accessDenied");
 	}
 	
 	@Override
 	public void configure(WebSecurity web) throws Exception {
-	    web
+	    /*web
 	       .ignoring()
-	       .antMatchers("/resources/**", "/static/**", "/css/**", "/js/**", "/images/**");
+	       .antMatchers("/resources/**", "/static/**", "/css/**", "/js/**", "/images/**");*/
 	}
 }
