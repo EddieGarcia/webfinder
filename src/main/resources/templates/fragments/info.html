@@ -1,0 +1,10 @@
+<!DOCTYPE html>
+<html>
+<body>
+	<div style="border: 1px solid; border-radius: 2px" th:fragment="info">	
+		<div>Security info</div>
+		<div sec:authorize="hasAuthority('USER')">Text visible to user.</div>
+		<div sec:authorize="hasAuthority('ADMIN')">Text visible to admin.</div>
+		<div sec:authentication="name"></div>
+	</div>
+</body>
