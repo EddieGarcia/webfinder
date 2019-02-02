@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<title>Admin Page</title>
+	<!--link rel="stylesheet" type="text/css" th:href="@{/css/home.css}" /-->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<script	src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+	<script	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+
+<body>
+	<div th:replace="fragments/header :: header"></div>
+	<div th:replace="fragments/info :: info"></div>
+
+	<div class="container">
+		
+		<a class="btn btn-primary" role="button" th:href="@{/admin/adduser}">Add user</a>
+		
+		<table class="table">
+			<thead>
+				<tr>
+					<th>Id</th>
+					<th>Meno</th>
+					<th>Email</th>
+					<th>Active</th>
+					<th>Edit</th>
+					<th>Delete</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="user : ${allUsers}">
+					<td th:text="${user.getId()}" />
+					<td th:text="${user.getName()}" />
+					<td th:text="${user.getEmail()}" />
+					<td th:text="${user.getActive()}" />
+					<td><a th:href="@{/admin/edit/{id}(id=${user.id})}">Edit</a></td>
+					<td th:switch="${user.getActive()}">
+						<a th:case="0" th:href="@{/admin/activate/{id}(id=${user.id})}">Activate</a>
+						<a th:case="1" th:href="@{/admin/deactivate/{id}(id=${user.id})}">Deactivate</a>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	
+	<div th:replace="fragments/footer :: footer"></div>
+</body>
+</html>

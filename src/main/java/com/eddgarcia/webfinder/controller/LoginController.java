@@ -1,16 +1,22 @@
 package com.eddgarcia.webfinder.controller;
+import java.util.Arrays;
+import java.util.HashSet;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.eddgarcia.webfinder.model.Role;
 import com.eddgarcia.webfinder.model.User;
+import com.eddgarcia.webfinder.repository.RoleRepository;
 import com.eddgarcia.webfinder.service.UserService;
 
 @Controller
@@ -18,6 +24,10 @@ public class LoginController {
 	
 	@Autowired
 	private UserService userService;
+	@Autowired
+    private RoleRepository roleRepository;
+    @Autowired
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
 
 	@RequestMapping(value="/login", method = RequestMethod.GET)
 	public ModelAndView login(){
@@ -46,7 +56,13 @@ public class LoginController {
 		if (bindingResult.hasErrors()) {
 			modelAndView.setViewName("registration");
 		} else {
+			// Save new user 
+			user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+	        user.setActive(1);
+	        Role userRole = roleRepository.findByRole("USER");
+	        user.setRoles(new HashSet<Role>(Arrays.asList(userRole)));
 			userService.saveUser(user);
+			
 			modelAndView.addObject("successMessage", "User has been registered successfully");
 			modelAndView.addObject("user", new User());
 			modelAndView.setViewName("registration");
